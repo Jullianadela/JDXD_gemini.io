@@ -1,18 +1,31 @@
+/* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
     background: #f3f6f0;
     margin: 0;
     color: #234438;
+    font-family: Arial, sans-serif;
 }
 
-header,
-footer {
+li {
+    margin-bottom: 10px;
+}
+
+/* Header */
+header {
+    padding: 25px;
     background: #234438;
     color: white;
     text-align: center;
-    padding: 25px;
 }
 
+nav a {
+    text-decoration: none;
+    color: black;
+    margin: 0 15px;
+}
+
+/* Main Layout */
 main {
     max-width: 800px;
     margin: auto;
@@ -20,31 +33,29 @@ main {
 }
 
 section {
-    background: white;
-    padding: 25px;
     margin-bottom: 20px;
+    padding: 25px;
+    background: white;
     border-radius: 10px;
 }
 
-li {
-    margin-bottom: 10px;
-}
-
+/* Chat Box */
 #chat {
     height: 250px;
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #ccc;
     overflow-y: auto;
     overflow-wrap: anywhere;
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 15px;
 }
 
+/* Chat Form */
 #chat-form {
     display: flex;
     gap: 10px;
 }
 
-input {
+#chat-form input {
     flex: 1;
     min-width: 0;
     padding: 12px;
@@ -53,15 +64,113 @@ input {
     font-size: 16px;
 }
 
-button {
+#chat-form button {
+    padding: 13px 20px;
     background: #234438;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 13px 20px;
     cursor: pointer;
 }
 
-button:hover {
+#chat-form button:hover {
     background: #376c58;
+}
+
+/* Bar Graph */
+.bar-graph {
+    display: flex;
+    height: 250px;
+    margin-top: 30px;
+}
+
+.graph-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 55px;
+    flex-shrink: 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.graph-bars {
+    display: flex;
+    flex: 1;
+    border-left: 2px solid #555;
+    border-bottom: 2px solid #555;
+}
+
+.bar-column {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+}
+
+.graph-bar {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+    max-width: 100px;
+    background: #376c58;
+    border-radius: 5px 5px 0 0;
+}
+
+.graph-bar span {
+    padding-top: 10px;
+    color: white;
+    font-weight: bold;
+}
+
+#bar-2023 {
+    height: 27%;
+}
+
+#bar-2024 {
+    height: 38%;
+    background: #234438;
+}
+
+/* Year Labels */
+.graph-years {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 57px;
+    font-weight: bold;
+}
+
+.graph-years span {
+    width: 50%;
+    text-align: center;
+}
+
+/* Chart Note and Source */
+.chart-note {
+    margin-top: 25px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.chart-source {
+    font-size: 14px;
+}
+
+.chart-source a {
+    color: #234438;
+}
+
+/* Footer */
+footer {
+    padding: 25px;
+    background: #234438;
+    color: white;
+    text-align: center;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: black;
+    margin: 0 15px;
 }
