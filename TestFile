@@ -11,14 +11,12 @@ if not api_key:
     raise ValueError("No API key bro check the .env file")
 
 client = genai.Client(api_key=api_key)
-
-
-
-reponse = input("Ask something: ")
+chatBot = True
+response = input("Ask something: ")
 
 interaction = client.interactions.create(
-    model="gemini-3.8-flash",
-    input=reponse
+    model="gemini-3.1-flash-lite",
+    input=response
 )
 
 print(interaction.output_text)
