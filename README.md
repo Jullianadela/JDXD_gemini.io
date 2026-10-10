@@ -14,6 +14,15 @@ pip install google-genai python-dotenv
 python TestFile
 ```
 
+To open the small desktop chat window instead, run:
+
+```powershell
+python TestFile --gui
+```
+
+The desktop window uses Python's built-in Tkinter and the same Gemini safety
+instructions as the terminal chatbot.
+
 Set `AKEY` in the ignored `.env` file. You can also add any real business
 resource URLs there; the chatbot only shares links that are configured:
 

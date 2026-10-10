@@ -3,6 +3,7 @@
 from dotenv import load_dotenv
 import json
 import os
+import sys
 from google import genai
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -90,6 +91,21 @@ resource_instruction = (
     else "No business-specific guide, workshop, or one-on-one links are configured. "
     "Do not invent URLs or claim these services are available."
 )
+
+
+def get_bot_response(user_message, conversation):
+    history = "\n\n".join(conversation)
+    prompt = (
+        f"Conversation history:\n{history}\n\n"
+        f"Latest user message:\n{user_message}"
+    )
+    interaction = client.interactions.create(
+        model="gemini-3.1-flash-lite",
+        input=prompt,
+        system_instruction=f"{SYSTEM_INSTRUCTION}\n\n{resource_instruction}",
+        store=False,
+    )
+    return interaction.output_text
 
 
 def contact_team():
@@ -231,42 +247,137 @@ def contact_team():
     )
 
 
-conversation = []
-print("Digital Safety Helper / Asistente de seguridad digital")
-print("Technology should make life easier, not put you at risk.")
-print("La tecnología debería hacer la vida más fácil, no ponerte en riesgo.")
-print(
-    "AI educational guidance only; not professional, emergency, or legal advice."
-)
-print(
-    "Orientación educativa de IA; no es asesoramiento profesional, de emergencia ni legal."
-)
-print("Type 'contact' to reach our team / Escribe 'contact' para comunicarte con el equipo.")
-print("Type 'quit' to exit / Escribe 'quit' para salir.")
-
-while True:
-    user_message = input("\nYou: ").strip()
-    if user_message.lower() in {"quit", "exit"}:
-        print("Stay safe online!")
-        break
-    if user_message.lower() in {"contact", "contact us", "support", "soporte", "contactar"}:
-        contact_team()
-        continue
-    if not user_message:
-        continue
-
-    history = "\n\n".join(conversation)
-    prompt = (
-        f"Conversation history:\n{history}\n\n"
-        f"Latest user message:\n{user_message}"
+def run_cli():
+    conversation = []
+    print("Digital Safety Helper / Asistente de seguridad digital")
+    print("Technology should make life easier, not put you at risk.")
+    print("La tecnología debería hacer la vida más fácil, no ponerte en riesgo.")
+    print(
+        "AI educational guidance only; not professional, emergency, or legal advice."
     )
-    interaction = client.interactions.create(
-        model="gemini-3.1-flash-lite",
-        input=prompt,
-        system_instruction=f"{SYSTEM_INSTRUCTION}\n\n{resource_instruction}",
-        store=False,
+    print(
+        "Orientación educativa de IA; no es asesoramiento profesional, de emergencia ni legal."
     )
+    print("Type 'contact' to reach our team / Escribe 'contact' para comunicarte con el equipo.")
+    print("Type 'quit' to exit / Escribe 'quit' para salir.")
 
-    answer = interaction.output_text
-    print(f"\nSafety Helper: {answer}")
-    conversation.extend((f"User: {user_message}", f"Safety Helper: {answer}"))
+    while True:
+        user_message = input("\nYou: ").strip()
+        if user_message.lower() in {"quit", "exit"}:
+            print("Stay safe online!")
+            break
+        if user_message.lower() in {"contact", "contact us", "support", "soporte", "contactar"}:
+            contact_team()
+            continue
+        if not user_message:
+            continue
+
+        answer = get_bot_response(user_message, conversation)
+        print(f"\nSafety Helper: {answer}")
+        conversation.extend((f"User: {user_message}", f"Safety Helper: {answer}"))
+
+
+def run_gui():
+    import threading
+    import tkinter as tk
+    from tkinter.scrolledtext import ScrolledText
+    from tkinter import ttk
+
+    root = tk.Tk()
+    root.title("Digital Safety Helper")
+    root.geometry("680x560")
+    root.minsize(420, 380)
+
+    heading = ttk.Label(
+        root,
+        text="Digital Safety Helper / Asistente de seguridad digital",
+        font=("Segoe UI", 15, "bold"),
+        padding=(14, 14, 14, 6),
+    )
+    heading.pack(anchor="w")
+    ttk.Label(
+        root,
+        text="AI educational guidance only; not professional, emergency, or legal advice.",
+        wraplength=640,
+        padding=(14, 0, 14, 10),
+    ).pack(anchor="w")
+
+    transcript = ScrolledText(root, wrap="word", state="disabled", padx=10, pady=10)
+    transcript.pack(fill="both", expand=True, padx=14, pady=(0, 10))
+
+    status = tk.StringVar(value="Ready")
+    ttk.Label(root, textvariable=status, padding=(14, 0, 14, 6)).pack(anchor="w")
+
+    controls = ttk.Frame(root, padding=(14, 0, 14, 14))
+    controls.pack(fill="x")
+    message_entry = ttk.Entry(controls)
+    message_entry.pack(side="left", fill="x", expand=True, ipady=6)
+    send_button = ttk.Button(controls, text="Send")
+    send_button.pack(side="left", padx=(8, 0), ipady=3)
+
+    conversation = []
+    request_in_progress = False
+
+    def append_message(speaker, message):
+        transcript.configure(state="normal")
+        transcript.insert("end", f"{speaker}: {message}\n\n")
+        transcript.configure(state="disabled")
+        transcript.see("end")
+
+    def finish_request(user_message, answer):
+        nonlocal request_in_progress
+        request_in_progress = False
+        send_button.configure(state="normal")
+        if answer is None:
+            status.set("Could not get a response. Check your connection and try again.")
+            append_message("Helper", "Sorry, I couldn't respond just now. Please try again.")
+        else:
+            status.set("Ready")
+            append_message("Safety Helper", answer)
+            conversation.extend((f"User: {user_message}", f"Safety Helper: {answer}"))
+        message_entry.focus_set()
+
+    def send_message(event=None):
+        nonlocal request_in_progress
+        user_message = message_entry.get().strip()
+        if not user_message or request_in_progress:
+            return "break"
+        if len(user_message) > 4000:
+            status.set("Please keep messages under 4,000 characters.")
+            return "break"
+
+        request_in_progress = True
+        send_button.configure(state="disabled")
+        status.set("Thinking...")
+        message_entry.delete(0, "end")
+        append_message("You", user_message)
+        history = list(conversation)
+
+        def request_response():
+            try:
+                answer = get_bot_response(user_message, history)
+            except Exception:
+                answer = None
+            root.after(0, finish_request, user_message, answer)
+
+        threading.Thread(target=request_response, daemon=True).start()
+        return "break" if event is not None else None
+
+    send_button.configure(command=send_message)
+    message_entry.bind("<Return>", send_message)
+    append_message(
+        "Helper",
+        "I'm an AI digital safety helper. I provide general educational guidance, "
+        "not professional, emergency, or legal advice.\n\n"
+        "Soy un asistente de seguridad digital con IA. Ofrezco orientación "
+        "educativa general, no asesoramiento profesional, de emergencia ni legal.",
+    )
+    message_entry.focus_set()
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    if "--gui" in sys.argv[1:]:
+        run_gui()
+    else:
+        run_cli()
