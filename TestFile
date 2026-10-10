@@ -1,0 +1,24 @@
+#Please work bruh
+
+from dotenv import load_dotenv
+import os
+from google import genai
+
+load_dotenv()
+api_key = os.getenv("AKEY")
+
+if not api_key:
+    raise ValueError("No API key bro check the .env file")
+
+client = genai.Client(api_key=api_key)
+
+
+
+reponse = input("Ask something: ")
+
+interaction = client.interactions.create(
+    model="gemini-3.8-flash",
+    input=reponse
+)
+
+print(interaction.output_text)
