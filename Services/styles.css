@@ -1,62 +1,32 @@
 body {
-    margin: 0;
-    font-family: Arial;
-    color: #0b1726;
+  font-family: Arial;
+  text-align: center;
+  background-color: #f4f4f4;
 }
 
-header {
-    background: #4a423d;
-    color: white;
-    padding: 0 35px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
+.tab {
+  background-color: #1e3a8a;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  font-size: 16px;
 }
 
-.main-logo h2{
-    color: #c97541;
+.workshop-content {
+  margin-top: 20px;
 }
 
-.main-logo h2, .main-logo p {
-    margin: 0;
+.calendar {
+  background: white;
+  padding: 20px;
+  width: 300px;
+  margin: auto;
+  border-radius: 10px;
 }
 
-.main-logo p {
-    font-size: 16px;
-}
-
-nav {
-    display: flex;
-    gap: 40px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-}
-
-/* Footer */
-footer {
-    background: #4a423d;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 25px;
-}
-
-.footer-title h2 {
-    color: #c97541;
-    margin: 0;
-}
-
-.footer-links {
-    display: flex;
-    gap: 30px;
-}
-
-.footer-links a {
-    color: white;
-    text-decoration: none;
+.date {
+  display: inline-block;
+  padding: 12px;
+  margin: 5px;
+  background-color: #db9240;
 }
