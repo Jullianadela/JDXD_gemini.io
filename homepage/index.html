@@ -1,42 +1,61 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>VeriSafe</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <header>
-            <div class="main-logo">
-                <h2>VeriSafe</h2>
-                <p>Drive Knowledge Further</p>
+<html lang="en">
+<head>
+    <title>VeriSafe</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>VeriSafe</h1>
+        <p>Digital safety made simple.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Stay Safe Online</h2>
+            <p>
+                VeriSafe helps older adults, families, and small
+                businesses protect themselves online.
+            </p>
+
+            <ul>
+                <li>Create stronger passwords</li>
+                <li>Recognize scams and phishing messages</li>
+                <li>Protect your social media accounts</li>
+                <li>Learn about two-factor authentication</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Ask VeriSafe</h2>
+            <p>
+                Try asking about passwords, scams,
+                or two-factor authentication.
+            </p>
+            <p>Do not share passwords or personal information.</p>
+
+            <div id="chat" role="log" aria-live="polite">
+                <p><strong>VeriSafe:</strong> Hello! How can I help?</p>
             </div>
-            <nav>
-                <a href="index.html">Home</a>
-                <a href="../about/about.html">About Us</a>
-                <a href="../services/services.html">Services</a>
-                <a href="../contact/contact.html">Contact Us</a>
-            </nav>
-        </header>
-        <main>
-            <section class="hero">
-                <div class="hero-content">
-                    <h1>Welcome to VeriSafe</h1>
-                    <p>Your trusted source for vehicle information and safety.</p>
-                    <a href="../services/services.html" class="btn">Explore Services</a>
-                </div>
-        </main>
-        <footer>
-            <div class="footer-title">
-                <h2>VeriSafe</h2>
-            </div>
-            <div class="footer-links">
-                <a href="../homepage/index.html">Home</a>
-                <a href="../about/about.html">About Us</a>
-                <a href="../services/services.html">Services</a>
-                <a href="../contact/contact.html">Contact Us</a>
-            </div>
-                <p>© 2026 KnowYourCars<br>All rights reserved.</p>
-            </div>
-        </footer>
-    </body>
+
+            <form id="chat-form">
+                <input
+                    id="question"
+                    type="text"
+                    placeholder="Type your question..."
+                    aria-label="Your question"
+                    required
+                >
+                <button type="submit">Send</button>
+            </form>
+
+            <p>Demo chatbot with preset replies. Educational guidance only.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 VeriSafe</p>
+    </footer>
+</body>
 </html>
