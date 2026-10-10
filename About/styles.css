@@ -5,7 +5,7 @@ body {
 }
 
 header {
-    background: #4a423d;
+    background: #234438;
     color: white;
     padding: 0 35px;
     display: flex;
@@ -65,7 +65,7 @@ nav a {
 
 /* Footer */
 footer {
-    background: #4a423d;
+    background: #234438;
     color: white;
     display: flex;
     align-items: center;
