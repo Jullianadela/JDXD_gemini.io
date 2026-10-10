@@ -48,6 +48,15 @@ main {
   text-align: center;
 }
 
+/* Calendar Styles */
+.calendar {
+  max-width: 650px;
+  margin: 25px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 10px;
+}
+
 .tab {
   padding: 12px 25px;
   background: #234438;
@@ -57,33 +66,60 @@ main {
   font-size: 16px;
 }
 
-.workshop-content {
-  margin-top: 25px;
-  padding: 25px;
-  background: white;
-  border-radius: 10px;
+/* Calendar Grid */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
 }
 
-/* Calendar */
-.calendar {
-  max-width: 350px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #f3f6f0;
-  border: 1px solid #d8ddd8;
-  border-radius: 10px;
-}
-
-.date {
-  display: inline-block;
-  padding: 12px;
-  margin: 5px;
-  background: #db9240;
-  color: #234438;
-  border-radius: 5px;
+.weekday {
   font-weight: bold;
+  text-align: center;
+  padding: 10px 0;
 }
 
+.day,
+.blank {
+  min-height: 45px;
+  padding: 10px 5px;
+  background: #f3f6f0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.blank {
+  background: transparent;
+}
+
+.event-date {
+  position: relative;
+  background: #b8b8b8;
+  cursor: pointer;
+}
+
+.event-date:hover {
+  background: #db9240;
+}
+
+.event-info {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  width: 200px;
+  padding: 10px;
+  background: #234438;
+  color: white;
+  border-radius: 5px;
+  font-size: 13px;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.event-date:hover .event-info {
+  display: block;
+}
 /* Footer */
 footer {
   padding: 25px;
