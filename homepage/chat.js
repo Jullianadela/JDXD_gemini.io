@@ -46,7 +46,7 @@ form.addEventListener("submit", async (event) => {
             );
         }
 
-        const answer = result.answer || (
+        const answer = result.reply || (
             isSpanish
                 ? "No pude crear una respuesta. Inténtalo de nuevo."
                 : "I couldn't create a response. Please try again."
