@@ -23,6 +23,16 @@ python TestFile --gui
 The desktop window uses Python's built-in Tkinter and the same Gemini safety
 instructions as the terminal chatbot.
 
+To run the website with the live Gemini chat, start its local backend:
+
+```powershell
+python TestFile --web
+```
+
+Then open <http://127.0.0.1:8000>. Keep the backend running while using the
+website; the Gemini API key stays on the backend and is never sent to the
+browser.
+
 Set `AKEY` in the ignored `.env` file. You can also add any real business
 resource URLs there; the chatbot only shares links that are configured:
 

@@ -1,26 +1,35 @@
 #Please work bruh
 
-from dotenv import load_dotenv
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
+from pathlib import Path
 import sys
 from google import genai
+from dotenv import load_dotenv
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-load_dotenv()
-api_key = os.getenv("AKEY")
-
+PROJECT_ROOT = Path(__file__).resolve().parent
+load_dotenv(PROJECT_ROOT / ".env", override=True)
+api_key = os.getenv("AKEY", "").strip()
 if not api_key:
-    raise ValueError("No API key bro check the .env file")
+    raise ValueError("No API key found. Set AKEY in the project .env file.")
 
 client = genai.Client(api_key=api_key)
+
 discord_webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
 
 SYSTEM_INSTRUCTION = """You are a multilingual digital safety helper for a business.
 Help people understand and reduce everyday cybersecurity risks, including
 suspicious texts and emails, account security, strong passwords, two-factor
 authentication, and account recovery.
+
+Keep responses concise, clear, and focused on the user's question. Use no more
+than three sentences and fewer than 150 words. Avoid unnecessary redundancy.
+For summaries, briefly recap the key points without repeating the entire answer.
+For clarification, explain clearly and concisely. Use simple language and avoid
+technical jargon that may confuse the user.
 
 Stay focused on the business's main purpose: helping people protect themselves
 from scams, identity theft, hacked accounts, and common online security risks.
@@ -95,17 +104,21 @@ resource_instruction = (
 
 def get_bot_response(user_message, conversation):
     history = "\n\n".join(conversation)
+
     prompt = (
         f"Conversation history:\n{history}\n\n"
         f"Latest user message:\n{user_message}"
     )
-    interaction = client.interactions.create(
+
+    response = client.models.generate_content(
         model="gemini-3.1-flash-lite",
-        input=prompt,
-        system_instruction=f"{SYSTEM_INSTRUCTION}\n\n{resource_instruction}",
-        store=False,
+        contents=prompt,
+        config={
+            "system_instruction": f"{SYSTEM_INSTRUCTION}\n\n{resource_instruction}"
+        }
     )
-    return interaction.output_text
+
+    return response.text
 
 
 def contact_team():
@@ -272,9 +285,14 @@ def run_cli():
         if not user_message:
             continue
 
-        answer = get_bot_response(user_message, conversation)
-        print(f"\nSafety Helper: {answer}")
-        conversation.extend((f"User: {user_message}", f"Safety Helper: {answer}"))
+        try:
+            answer = get_bot_response(user_message, conversation)
+            print(f"\nSafety Helper: {answer}")
+            conversation.extend((f"User: {user_message}", f"Safety Helper: {answer}"))
+
+        except Exception as error:
+            print(f"\nGemini API error: {error}")
+            print("Please check your API key and internet connection.")
 
 
 def run_gui():
@@ -376,8 +394,105 @@ def run_gui():
     root.mainloop()
 
 
+class WebRequestHandler(SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(PROJECT_ROOT), **kwargs)
+
+    def translate_path(self, path):
+        resolved_path = Path(super().translate_path(path)).resolve()
+        try:
+            relative_path = resolved_path.relative_to(PROJECT_ROOT)
+        except ValueError:
+            return str(PROJECT_ROOT / "__not_found__")
+
+        allowed_directories = {"About", "Contact", "Services", "homepage"}
+        if not relative_path.parts or relative_path.parts[0] not in allowed_directories:
+            return str(PROJECT_ROOT / "__not_found__")
+        return str(resolved_path)
+
+    def do_GET(self):
+        if self.path == "/":
+            self.send_response(302)
+            self.send_header("Location", "/homepage/index.html")
+            self.end_headers()
+            return
+        super().do_GET()
+
+    def do_POST(self):
+        if self.path != "/api/chat":
+            self.send_json(404, {"error": "Endpoint not found."})
+            return
+
+        try:
+            content_length = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            self.send_json(400, {"error": "Invalid request."})
+            return
+
+        if content_length <= 0 or content_length > 100000:
+            self.send_json(413, {"error": "Request must be under 100 KB."})
+            return
+
+        try:
+            payload = json.loads(self.rfile.read(content_length))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            self.send_json(400, {"error": "Request must contain valid JSON."})
+            return
+
+        if not isinstance(payload, dict):
+            self.send_json(400, {"error": "Invalid request."})
+            return
+
+        user_message = payload.get("message")
+        conversation = payload.get("conversation", [])
+        if (
+            not isinstance(user_message, str)
+            or not user_message.strip()
+            or len(user_message) > 4000
+            or not isinstance(conversation, list)
+            or len(conversation) > 20
+            or any(not isinstance(item, str) or len(item) > 4000 for item in conversation)
+        ):
+            self.send_json(400, {"error": "Invalid message or conversation history."})
+            return
+
+        try:
+            answer = get_bot_response(user_message.strip(), conversation)
+        except Exception as error:
+            print(f"Gemini request failed ({type(error).__name__}).")
+            self.send_json(
+                502,
+                {"error": "Gemini could not respond. Check the server terminal and try again."},
+            )
+            return
+
+        self.send_json(200, {"answer": answer or ""})
+
+    def send_json(self, status, payload):
+        body = json.dumps(payload).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+        self.wfile.write(body)
+
+
+def run_web():
+    server = ThreadingHTTPServer(("127.0.0.1", 8000), WebRequestHandler)
+    print("Website running at http://127.0.0.1:8000")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nWebsite server stopped.")
+    finally:
+        server.server_close()
+
+
 if __name__ == "__main__":
-    if "--gui" in sys.argv[1:]:
+    if "--web" in sys.argv[1:]:
+        run_web()
+    elif "--gui" in sys.argv[1:]:
         run_gui()
     else:
         run_cli()

@@ -43,10 +43,11 @@
                         type="text"
                         placeholder="Type your question..."
                         aria-label="Your question"
+                        maxlength="4000"
                         required>
                     <button type="submit">Send</button>
                 </form>
-                <p>Demo chatbot with preset replies. Educational guidance only.</p>
+                <p id="chat-status" role="status">Educational guidance only.</p>
             </section>
             <section id="scam-statistics">
                 <h2>Scams Have a Real Impact</h2>
@@ -102,5 +103,6 @@
                 <a href="../Contact/Contact.html">Contact Us</a>
             </div>
         </footer>
+        <script src="chat.js" defer></script>
     </body>
 </html>
