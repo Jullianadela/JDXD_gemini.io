@@ -405,7 +405,13 @@ class WebRequestHandler(SimpleHTTPRequestHandler):
         except ValueError:
             return str(PROJECT_ROOT / "__not_found__")
 
-        allowed_directories = {"About", "Contact", "Services", "homepage"}
+        allowed_directories = {
+            "About",
+            "Contact",
+            "Services",
+            "SpanishHome",
+            "homepage",
+        }
         if not relative_path.parts or relative_path.parts[0] not in allowed_directories:
             return str(PROJECT_ROOT / "__not_found__")
         return str(resolved_path)
