@@ -86,6 +86,69 @@ section {
 }
 
 /* Bar Graph */
+/* Navigation and language switcher */
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 10px;
+}
+
+.nav-links a {
+    margin: 0 15px;
+}
+
+.language-switcher {
+    display: inline-flex;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+}
+
+.language-switcher a {
+    display: inline-block;
+    margin: 0;
+    padding: 6px 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.language-switcher a + a {
+    border-left: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.language-switcher a[aria-current="page"] {
+    background: white;
+    color: #234438;
+    font-weight: 700;
+}
+
+.language-switcher a:hover {
+    background: #db9240;
+    color: #234438;
+}
+
+nav a:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+    .nav-links a {
+        margin: 0 9px;
+        font-size: 14px;
+    }
+}
+
+/* Bar Graph */
 .bar-graph {
     display: flex;
     height: 250px;
