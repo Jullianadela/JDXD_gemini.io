@@ -409,12 +409,20 @@ class WebRequestHandler(SimpleHTTPRequestHandler):
             "About",
             "Contact",
             "Services",
+            "SpanishAbout",
+            "SpanishContact",
             "SpanishHome",
+            "SpanishServices",
             "homepage",
         }
         if not relative_path.parts or relative_path.parts[0] not in allowed_directories:
             return str(PROJECT_ROOT / "__not_found__")
         return str(resolved_path)
+
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
+        self.send_header("Pragma", "no-cache")
+        super().end_headers()
 
     def do_GET(self):
         if self.path == "/":
