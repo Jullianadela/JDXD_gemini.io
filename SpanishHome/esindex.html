@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>VeriSafe | Inicio</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <h1>VeriSafe</h1>
+            <p>La seguridad digital es más sencilla.</p>
+            <nav>
+                <a href="index.html">Inicio</a>
+                <a href="../About/About.html">Acerca de nosotros</a>
+                <a href="../Services/Services.html">Servicios</a>
+                <a href="../Contact/Contact.html">Contacto</a>
+            </nav>
+        </header>   
+        <main>
+            <section>
+                <h2>Protégete en internet</h2>
+                <p>VeriSafe ayuda a las personas mayores, las familias y las pequeñas
+                    empresas a protegerse en internet.
+                </p>
+                <ul>
+                    <li>Crear contraseñas más seguras</li>
+                    <li>Reconocer estafas y mensajes de suplantación de identidad</li>
+                    <li>Proteger tus cuentas de redes sociales</li>
+                    <li>Aprender sobre la autenticación de dos factores</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Pregúntale a VeriSafe</h2>
+                <p>Pregunta sobre contraseñas, estafas
+                    o autenticación de dos factores.
+                </p>
+                <p>No compartas contraseñas ni información personal.</p>
+                <div id="chat" role="log" aria-live="polite">
+                    <p><strong>VeriSafe:</strong> ¡Hola! ¿En qué puedo ayudarte?</p>
+                </div>
+                <form id="chat-form">
+                    <input
+                        id="question"
+                        type="text"
+                        placeholder="Escribe tu pregunta..."
+                        aria-label="Tu pregunta"
+                        required>
+                    <button type="submit">Enviar</button>
+                </form>
+                <p>Chatbot de demostración con respuestas predefinidas. Solo ofrece orientación educativa.</p>
+            </section>
+            <section id="scam-statistics">
+                <h2>Las estafas tienen consecuencias reales</h2>
+                <p>Porcentaje de personas que denunciaron un fraude ante la Comisión Federal de Comercio (FTC)
+                    y dijeron haber perdido dinero:
+                </p>
+
+                <div class="bar-graph">
+                    <div class="graph-labels">
+                        <span>100%</span>
+                        <span>75%</span>
+                        <span>50%</span>
+                        <span>25%</span>
+                        <span>0%</span>
+                    </div>
+                    <div class="graph-bars">
+                        <div class="bar-column">
+                            <div id="bar-2023" class="graph-bar">
+                                <span>27%</span>
+                            </div>
+                        </div>
+                        <div class="bar-column">
+                            <div id="bar-2024" class="graph-bar">
+                                <span>38%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graph-years">
+                    <span>2023</span>
+                    <span>2024</span>
+                </div>
+                <p class="chart-note">Estas cifras corresponden a personas que denunciaron un fraude,
+                    no al porcentaje de todas las personas que sufrieron una estafa.
+                </p>
+                <p class="chart-source">
+                    Fuente:
+                    <a href="https://www.ftc.gov/news-events/news/press-releases/2025/03/new-ftc-data-show-big-jump-reported-losses-fraud-125-billion-2024">
+                        Comisión Federal de Comercio (FTC), datos sobre fraudes de 2024
+                    </a>
+                </p>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-title">
+                <h2>VeriSafe</h2>
+                <p>La seguridad digital es más sencilla.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Inicio</a>
+                <a href="../About/About.html">Acerca de nosotros</a>
+                <a href="../Services/Services.html">Servicios</a>
+                <a href="../Contact/Contact.html">Contáctanos</a>
+            </div>
+        </footer>
+    </body>
+</html>

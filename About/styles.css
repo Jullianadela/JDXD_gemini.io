@@ -5,17 +5,37 @@ body {
 }
 
 header {
+    padding: 25px;
     background: #234438;
     color: white;
-    padding: 0 35px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
+    text-align: center;
+}
+
+.main-logo h2 {
+    margin-bottom: 5px;
+    color: #db9240;
+}
+
+.main-logo p {
+    margin-top: 0;
+}
+
+nav {
+    margin-top: 20px;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #db9240;
 }
 
 .about-grid {
-  display: grid;
+    display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
     padding: 24px 40px;
@@ -31,7 +51,7 @@ header {
 }
 
 @media (max-width: 900px) {
-  .about-grid {
+    .about-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
@@ -39,28 +59,7 @@ header {
 @media (max-width: 560px) {
     .about-grid {
         grid-template-columns: 1fr;
-  }
-}
-.main-logo h2{
-    color: #c97541;
-}
-
-.main-logo h2, .main-logo p {
-    margin: 0;
-}
-
-.main-logo p {
-    font-size: 16px;
-}
-
-nav {
-    display: flex;
-    gap: 40px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
+    }
 }
 
 /* Footer */
