@@ -127,25 +127,22 @@ nav a:focus-visible {
 
 /* Footer */
 footer {
+    padding: 25px;
     background: #234438;
     color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 25px;
+    text-align: center;
 }
 
-.footer-title h2 {
-    color: #c97541;
-    margin: 0;
-}
-
-.footer-links {
-    display: flex;
-    gap: 30px;
+footer h2 {
+    color: #db9240;
 }
 
 .footer-links a {
-    color: white;
     text-decoration: none;
+    color: white;
+    margin: 0 15px;
+}
+
+.footer-links a:hover {
+    color: #db9240;
 }
