@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    color: #0b1726;
+}
+
+header {
+    padding: 25px;
+    background: #234438;
+    color: white;
+    text-align: center;
+}
+
+.main-logo h2 {
+    margin-bottom: 5px;
+    color: #db9240;
+}
+
+.main-logo p {
+    margin-top: 0;
+}
+
+nav {
+    margin-top: 20px;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #db9240;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    padding: 24px 40px;
+}
+
+.panel {
+    background-color: white;
+    color: #0b1726;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid #d8ddd8;
+    border-top: 4px solid #c97541;
+}
+
+@media (max-width: 900px) {
+    .about-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Footer */
+footer {
+    background: #234438;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 25px;
+}
+
+.footer-title h2 {
+    color: #c97541;
+    margin: 0;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+}
